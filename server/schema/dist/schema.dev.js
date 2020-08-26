@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var graphql = require('graphql');
 
 var _ = require('lodash');
@@ -7,7 +9,8 @@ var _ = require('lodash');
 var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLString = graphql.GraphQLString,
     GraphQLSchema = graphql.GraphQLSchema,
-    GraphQLID = graphql.GraphQLID; // dummy data
+    GraphQLID = graphql.GraphQLID,
+    GraphQLInt = graphql.GraphQLInt; // dummy data
 
 var books = [{
   name: "Name of the wind",
@@ -22,6 +25,35 @@ var books = [{
   genre: "Sci-Fi",
   id: "3"
 }];
+var authors = [{
+  name: 'Patrick Rothfuss',
+  age: 44,
+  id: '1'
+}, {
+  name: 'Brandon Sanderson',
+  age: 42,
+  id: '2'
+}, {
+  name: 'Terry Pratchett',
+  age: 66,
+  id: '3'
+}];
+var AuthorType = new GraphQLObjectType({
+  name: "Author",
+  fields: function fields() {
+    return {
+      name: {
+        type: GraphQLString
+      },
+      age: {
+        type: GraphQLInt
+      },
+      id: {
+        type: GraphQLString
+      }
+    };
+  }
+});
 var BookType = new GraphQLObjectType({
   name: "Book",
   fields: function fields() {
@@ -50,7 +82,21 @@ var RootQuery = new GraphQLObjectType({
       },
       resolve: function resolve(parent, args) {
         // code to get data from db / other source
+        console.log(_typeof(args.id));
         return _.find(books, {
+          id: args.id
+        });
+      }
+    },
+    author: {
+      type: AuthorType,
+      args: {
+        id: {
+          type: GraphQLID
+        }
+      },
+      resolve: function resolve(parent, args) {
+        return _.find(authors, {
           id: args.id
         });
       }

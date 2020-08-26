@@ -7,7 +7,7 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLID,
-  GraphQLInt
+  GraphQLI
 } = graphql;
 
 
@@ -30,10 +30,10 @@ const AuthorType = new GraphQLObjectType({
   name: "Author",
   fields: () => ({
     name: { type: GraphQLString },
-    age: { type: GraphQLInt },
-    id: { type: GraphQLString },
-  }),
-});
+    age: { type: GraphQLID },
+    id: { type: GraphQLString }
+  })
+})
 
 
 
@@ -59,17 +59,6 @@ const RootQuery = new GraphQLObjectType({
 
       }
     },
-
-    author: {
-    type: AuthorType,
-    args: { id: { type: GraphQLID } },
-      resolve(parent,args){
-        return _.find(authors, {id: args.id })
-      }
-    }
-
-
-
   },
 });
 

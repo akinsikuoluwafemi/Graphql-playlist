@@ -60,7 +60,7 @@ const RootQuery = new GraphQLObjectType({
       }
     },
 
-    author: {
+    author{
     type: AuthorType,
     args: { id: { type: GraphQLID } },
       resolve(parent,args){
